@@ -54,3 +54,27 @@ chrome.tabs.onRemoved.addListener(function(tabId, removeInfo) {
 
 // 注意：不再需要监听标签页创建事件，因为在标签页创建时URL通常是未知的
 // 所有关于新标签页的逻辑都应该在onUpdated监听器中处理
+
+// 监听来自popup.js的消息
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    if (request.action === "removeDuplicateTabs") {
+        removeDuplicateTabs();
+    }
+});
+
+// 一键清除重复标签页的函数
+function removeDuplicateTabs() {
+    chrome.tabs.query({}, function(tabs) {
+        let seenUrls = new Set();
+
+        tabs.forEach(tab => {
+            if (seenUrls.has(tab.url)) {
+                // 如果这个URL已经见过了，关闭这个标签页
+                chrome.tabs.remove(tab.id);
+            } else {
+                // 否则，添加这个URL到集合中
+                seenUrls.add(tab.url);
+            }
+        });
+    });
+}

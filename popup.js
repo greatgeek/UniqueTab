@@ -31,3 +31,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+// 一键移除重复标签
+document.getElementById('removeDuplicates').addEventListener('click', function() {
+    chrome.runtime.sendMessage({ action: "removeDuplicateTabs" });
+});
+

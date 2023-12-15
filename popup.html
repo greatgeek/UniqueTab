@@ -1,14 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Tab Manager</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-    <div>
-        <img id="statusIcon" src="icon-disabled.png" alt="Status Icon">
-        <label>
-            <input type="checkbox" id="toggleFeature"> Enable Duplicate Tab Prevention
-        </label>
+    <div class="container">
+        <img id="statusIcon" src="icon-disabled.png" alt="Status Icon" class="status-icon">
+        <div class="feature-toggle">
+            <label class="switch">
+                <input type="checkbox" id="toggleFeature">
+                <span class="slider round"></span>
+            </label>
+            <label for="toggleFeature" class="toggle-label">Enable Duplicate Tab</label>
+        </div>
+        <button id="removeDuplicates" class="action-button">一键去除重复 Tabs</button>
     </div>
     <script src="popup.js"></script>
 </body>
