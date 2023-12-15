@@ -1,9 +1,26 @@
 let tabsUrlMap = new Map(); // 使用映射来存储标签页ID和URL
+let featureEnabled = true; // 默认启用功能
+
+// 从存储中加载用户的设置
+chrome.storage.sync.get(['duplicateTabPreventionEnabled'], function(result) {
+    featureEnabled = result.duplicateTabPreventionEnabled !== false;
+});
+
+// 监听来自popup.js的设置更改
+chrome.storage.onChanged.addListener(function(changes, namespace) {
+    for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
+        if (key === 'duplicateTabPreventionEnabled') {
+            featureEnabled = newValue;
+        }
+    }
+});
 
 // 监听标签页更新事件
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+    if (!featureEnabled) return; // 如果功能未启用，则不执行任何操作
+
     // 忽略空白或特殊的新标签页
-    if (!tab.url || tab.url === 'chrome://newtab/' || tab.url === 'about:newtab') {
+    if (!tab.url || tab.url.startsWith('chrome://') || tab.url.startsWith('about:')) {
         return;
     }
 
@@ -16,9 +33,9 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
             // 聚焦到已存在的标签页
             chrome.tabs.update(tabsUrlMap.get(tab.url), { active: true });
         } else {
-            // 否则添加新URL到映射
+            // 更新映射中的URL和标签页ID
             tabsUrlMap.set(tab.url, tabId);
-            console.log(`New URL added to map: ${tab.url}`);
+            console.log(`URL updated in map: ${tab.url}`);
         }
     }
 });
@@ -35,14 +52,5 @@ chrome.tabs.onRemoved.addListener(function(tabId, removeInfo) {
     }
 });
 
-// 监听标签页创建事件，以便于在创建时立即添加到集合中
-chrome.tabs.onCreated.addListener(function(tab) {
-    // 忽略空白或特殊的新标签页
-    if (!tab.url || tab.url === 'chrome://newtab/' || tab.url === 'about:newtab') {
-        return;
-    }
-    if (!tabsUrlMap.has(tab.url)) {
-        tabsUrlMap.set(tab.url, tab.id);
-        console.log(`URL added to map on creation: ${tab.url}`);
-    }
-});
+// 注意：不再需要监听标签页创建事件，因为在标签页创建时URL通常是未知的
+// 所有关于新标签页的逻辑都应该在onUpdated监听器中处理
