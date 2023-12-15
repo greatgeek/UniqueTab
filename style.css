@@ -1,21 +1,17 @@
-/* styles.css */
-/* 滑块开关的样式 */
 .switch {
     position: relative;
     display: inline-block;
     width: 60px;
     height: 34px;
-  }
-  
-  /* 隐藏默认的复选框 */
-  .switch input {
+}
+
+.switch input { 
     opacity: 0;
     width: 0;
     height: 0;
-  }
-  
-  /* 滑块的样式 */
-  .slider {
+}
+
+.slider {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -23,11 +19,11 @@
     right: 0;
     bottom: 0;
     background-color: #ccc;
+    -webkit-transition: .4s;
     transition: .4s;
-    border-radius: 34px;
-  }
-  
-  .slider:before {
+}
+
+.slider:before {
     position: absolute;
     content: "";
     height: 26px;
@@ -35,57 +31,40 @@
     left: 4px;
     bottom: 4px;
     background-color: white;
+    -webkit-transition: .4s;
     transition: .4s;
-    border-radius: 50%;
-  }
-  
-  /* 当复选框被选中时，滑块的样式 */
-  input:checked + .slider {
+}
+
+input:checked + .slider {
     background-color: #2196F3;
-  }
-  
-  input:focus + .slider {
+}
+
+input:focus + .slider {
     box-shadow: 0 0 1px #2196F3;
-  }
-  
-  input:checked + .slider:before {
-    transform: translateX(26px);
-  }
-  
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f7f7f7;
-    margin: 0;
-    padding: 20px;
 }
-.container {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+.slider.round {
+    border-radius: 34px;
 }
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Optional: Additional styles for other elements */
 .status-icon {
+    width: 100px;
+    height: auto;
     display: block;
-    margin: 0 auto 20px;
+    margin: auto;
 }
-.feature-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
+
 .toggle-label {
-    margin-left: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    vertical-align: middle;
 }
+
 .action-button {
     width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-}
-.action-button:hover {
-    background-color: #0056b3;
 }
